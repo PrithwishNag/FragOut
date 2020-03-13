@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "585249012102",
+    "firebase_url": "https://fragsout.firebaseio.com",
+    "project_id": "fragsout",
+    "storage_bucket": "fragsout.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585249012102:android:1566dae1bfe8ff33ecd407",
+        "android_client_info": {
+          "package_name": "com.example.fragout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585249012102-9n9m5lo615ndrkbtmg0mb89k5vj2u4c6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fragout",
+            "certificate_hash": "ad5397e4bd86f5783c28336b652c128729d7df36"
+          }
+        },
+        {
+          "client_id": "585249012102-ks2j6d2mot4f3kk0jsi0r1ik0dta8v8p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4I5TPHykIrIQQq9a-iu09W58CIMaoPZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585249012102-ks2j6d2mot4f3kk0jsi0r1ik0dta8v8p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

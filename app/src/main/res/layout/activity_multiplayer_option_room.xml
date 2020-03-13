@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundblur2"
+    tools:context=".MultiplayerOptionRoom">
+
+    <Button
+        android:id="@+id/room"
+        android:layout_width="177dp"
+        android:layout_height="57dp"
+        android:background="@drawable/button_design"
+        android:text="Play"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.926" />
+
+    <TextView
+        android:id="@+id/MatchmakingUpdate"
+        android:layout_width="169dp"
+        android:layout_height="54dp"
+        android:gravity="bottom|left"
+        android:text="Finding..."
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/room"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.309"
+        app:layout_constraintStart_toStartOf="@+id/room"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="177dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="56dp"
+        android:background="@drawable/button_design"
+        android:text="@android:string/cancel"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/room"
+        app:layout_constraintEnd_toEndOf="@+id/room"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/room"
+        app:layout_constraintTop_toTopOf="@+id/room"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="312dp"
+        android:layout_height="115dp"
+        android:text="FragsOut\n\t\t\t\t\t\tMultiplayer..."
+        android:textColor="@color/black"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.114" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
