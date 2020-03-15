@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".LeaderboardList"></activity>
+        <activity android:name=".Leaderboard"></activity>
         <activity
             android:name=".test_multiplayer_graphics"
             android:screenOrientation="landscape" />
