@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
 import org.w3c.dom.Text;
 
 import java.util.Locale;
@@ -1623,14 +1625,16 @@ public class MultipleChoiceScreen extends AppCompatActivity {
 
     public void setHighScore(String HighScoreString,int HighScore)
     {
+        Firebase mref = new Firebase("https://fragsout.firebaseio.com/");
         if(score>HighScore)
         {
             HighScore=score;
             SharedPreferences prefs = this.getSharedPreferences("myKey", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor =prefs.edit();
+            SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(HighScoreString,HighScore);
             editor.commit();
         }
+        mref.child("Leaderboard").child(""+HighScoreString).child(""+HomeScreen.Name).setValue(""+HighScore);
     }
 
     public int getHighScore(String HighScore) {

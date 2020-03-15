@@ -66,46 +66,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/exit"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_weight="1"
-        android:background="@color/half_transparent"
-        android:elevation="10dp"
-        android:text="Exit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/home"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="1dp"
-        android:layout_toEndOf="@+id/exit"
-        android:background="@color/half_transparent"
-        android:elevation="10dp"
-        android:text="Home"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/exit"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider3"
-        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="361dp"
-        android:layout_height="60dp"
+        android:layout_width="411dp"
+        android:layout_height="56dp"
         android:background="@color/transparent69"
         android:elevation="10dp"
         android:minHeight="?attr/actionBarSize"
@@ -145,10 +112,9 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:id="@+id/name"
-        android:layout_width="116dp"
-        android:layout_height="31dp"
-        android:text="Prithwish"
+        android:id="@+id/Name"
+        android:layout_width="283dp"
+        android:layout_height="37dp"
         android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/experience_bar"
@@ -160,18 +126,18 @@
 
     <TextView
         android:id="@+id/exp_count"
-        android:layout_width="66dp"
-        android:layout_height="18dp"
+        android:layout_width="115dp"
+        android:layout_height="21dp"
         android:layout_marginBottom="5dp"
-        android:text="Exp:1000"
+        android:text="Exp:0"
         android:textColor="@color/black"
         android:textSize="15dp"
         app:layout_constraintBottom_toTopOf="@+id/experience_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/experience_bar"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/Name"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
         android:id="@+id/experience_bar"
@@ -189,7 +155,7 @@
 
     <TextView
         android:id="@+id/level"
-        android:layout_width="54dp"
+        android:layout_width="61dp"
         android:layout_height="17dp"
         android:text="Level: 0"
         android:textColor="@color/black"
@@ -198,7 +164,7 @@
         app:layout_constraintEnd_toEndOf="@+id/experience_bar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/exp_count"
-        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/Name"
         app:layout_constraintVertical_bias="0.6" />
 
     <Button
@@ -209,10 +175,23 @@
         android:text="No option"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.193"
+        app:layout_constraintHorizontal_bias="0.203"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.127" />
+        app:layout_constraintVertical_bias="0.132" />
+
+    <Button
+        android:id="@+id/Leaderboard"
+        android:layout_width="121dp"
+        android:layout_height="69dp"
+        android:background="@drawable/button_design"
+        android:text="LeaderBoard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.734"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.132" />
 
     <Button
         android:id="@+id/multiOpt"

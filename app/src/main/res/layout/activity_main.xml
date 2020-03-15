@@ -179,7 +179,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/Name"
         android:layout_width="116dp"
         android:layout_height="31dp"
         android:text="Prithwish"
@@ -204,7 +204,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/experience_bar"
-        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/Name"
         app:layout_constraintVertical_bias="1.0" />
 
     <ProgressBar
@@ -232,7 +232,7 @@
         app:layout_constraintEnd_toEndOf="@+id/experience_bar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/exp_count"
-        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/Name"
         app:layout_constraintVertical_bias="0.6" />
 
     <Button

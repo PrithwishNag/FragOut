@@ -3,17 +3,19 @@ package com.example.fragout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -36,7 +38,7 @@ public class MultiplayerGameRoom extends AppCompatActivity {
 
     int num1 = 10, num2 = 20, sum = 0, mult = 0, sub = 0, div = 0, r = 0, score = 0;
     Random rand;
-    long timeLeft = 60000;
+    long timeLeft = 10000;
     long startcount = 10000;
 
     int lvlcount = 0;
@@ -113,6 +115,7 @@ public class MultiplayerGameRoom extends AppCompatActivity {
         //operatorRandomizer();
 
     }
+
 
     ValueEventListener waitingListener;
 
@@ -1991,6 +1994,9 @@ public class MultiplayerGameRoom extends AppCompatActivity {
                         {
                             mref.child("GameRoom").child(gameroomid+"").child(Id+"").child("score").setValue("0");
                         }
+                        if (!dataSnapshot.child(Id+"").hasChild("Name")) {
+                            mref.child("GameRoom").child(gameroomid+"").child(Id+"").child("Name").setValue(""+HomeScreen.Name);
+                        }
                         mref.child("GameRoom").child(gameroomid+"").child(Id+"").child("score").setValue(""+score);
                         mref.child("GameRoom").child(gameroomid+"").removeEventListener(this);
                     }
@@ -2071,7 +2077,20 @@ public class MultiplayerGameRoom extends AppCompatActivity {
                     oppId=gameroomsplit[0];
                 }
                 //test.setText(oppId);
-                compareScore(oppId);
+                final String finalOppId = oppId;
+                mref.child("GameRoom").child(gameroomid+"").child(oppId+"").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String oppName = (String)dataSnapshot.child("Name").getValue();
+                        compareScore(finalOppId,oppName);
+                        mref.child("GameRoom").child(gameroomid+"").child(finalOppId+"").removeEventListener(this);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
                 mref.child("Multiplayer").child(Id+"").child("GameRoomid").removeEventListener(this);
             }
 
@@ -2108,7 +2127,8 @@ public class MultiplayerGameRoom extends AppCompatActivity {
                         if(dataSnapshot.hasChild("score"))
                         {
                             String oppscore = (String)dataSnapshot.child("score").getValue();
-                            oppscoreshowtv.setText("OPPONENT SCORE:\n"+oppscore);
+                            String oppName = (String)dataSnapshot.child("Name").getValue();
+                            oppscoreshowtv.setText(oppName+"\'s SCORE:\n"+oppscore);
                         }
                     }
 
@@ -2177,7 +2197,7 @@ public class MultiplayerGameRoom extends AppCompatActivity {
         String sc=scoretextview.getText().toString();
         score = Integer.parseInt(sc);
     }
-    void compareScore(final String oppId)
+    void compareScore(final String oppId, final String oppName)
     {
         mref = new Firebase("https://fragsout.firebaseio.com/");
         mref.child("Multiplayer").child(Id+"").child("GameRoomid").addValueEventListener(new ValueEventListener() {
@@ -2194,15 +2214,15 @@ public class MultiplayerGameRoom extends AppCompatActivity {
                         if(oppscoreint>myscoreint)
                         {
                             mref.child("GameRoom").child(gameroomid+"").child(Id+"").child("result").setValue("LOSE");
-                            showResult("LOSE");
+                            showResult("BETTER LUCK NEXT TIME\nYOU LOSE",oppName,oppscoreint,myscoreint,-1);
                         }
                         else if (oppscoreint<myscoreint){
                             mref.child("GameRoom").child(gameroomid+"").child(Id+"").child("result").setValue("WIN");
-                            showResult("WIN");
+                            showResult("CONGRATULATIONS\nYOU WIN!!",oppName,oppscoreint,myscoreint,1);
                         }
                         else {
                             mref.child("GameRoom").child(gameroomid+"").child(Id+"").child("result").setValue("DRAW");
-                            showResult("DRAW");
+                            showResult("IT'S A DRAW",oppName,oppscoreint,myscoreint,0);
                         }
                         mref.child("GameRoom").child(gameroomid+"").removeEventListener(this);
                     }
@@ -2224,12 +2244,13 @@ public class MultiplayerGameRoom extends AppCompatActivity {
 
     }
 
-    void showResult(String result)
+    void showResult(String result,String oppName,int oppscore,int myscore,int wld)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Result:");
-        builder.setMessage(result)
+        builder//.setMessage(result+"\n\n"+oppName+":"+oppscore+"\n"+HomeScreen.Name+":"+myscore)
                 .setCancelable(false)
+                .setView(R.layout.custom_alert_box)
                 .setPositiveButton("EXIT",new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -2244,7 +2265,44 @@ public class MultiplayerGameRoom extends AppCompatActivity {
                     }
                 });
         AlertDialog alert=builder.create();
-        alert.show();
+        alert.show();*/
+
+        final Context context = this;
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_alert_box);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView res_tv = dialog.findViewById(R.id.text);
+        res_tv.setText(result+"\n\n"+oppName+":"+oppscore+"\n"+HomeScreen.Name+":"+myscore);
+
+        ImageButton image = dialog.findViewById(R.id.image);
+
+        if(wld==-1)
+            image.setImageResource(R.drawable.loseimg);
+        else if (wld==1)
+            image.setImageResource(R.drawable.winimg);
+        else
+            image.setImageResource(R.drawable.drawimg);
+
+        dialog.setCancelable(false);
+
+        Button dialogButton = dialog.findViewById(R.id.dialogButtonOK);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(MultiplayerGameRoom.this, HomeScreen.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                clearFirebaseData();
+                startActivity(intent);}
+        });
+        dialog.show();
     }
 
     void getID()

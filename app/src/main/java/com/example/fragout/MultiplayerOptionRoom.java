@@ -3,7 +3,12 @@ package com.example.fragout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +52,13 @@ public class MultiplayerOptionRoom extends AppCompatActivity {
 
         cancel.setVisibility(View.INVISIBLE);
 
+        if(!isOnline())
+        {
+            updatetext.setText("You Are Offline");
+            room.setEnabled(false);
+            room.setBackgroundResource(R.drawable.disabled_button_design);
+        }
+
         String message = checkMessage();
         if(message!=null)
         {
@@ -74,12 +86,24 @@ public class MultiplayerOptionRoom extends AppCompatActivity {
             public void onClick(View view) {
                 Firebase childref = mref.child("Multiplayer").child(""+id).child("waiting");
                 childref.setValue("1");
+                childref = mref.child("Multiplayer").child(""+id).child("Name");
+                childref.setValue(""+HomeScreen.Name);
                 cancel.setVisibility(View.VISIBLE);
                 room.setVisibility(View.INVISIBLE);
                 MatchFinder("Finding...");
             }
         });
 
+    }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

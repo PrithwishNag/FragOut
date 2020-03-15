@@ -2,12 +2,18 @@ package com.example.fragout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -19,6 +25,7 @@ public class HomeScreen extends AppCompatActivity {
     public static final String PLAY_TYPE = "Key2";
     private static final String Tag=MainActivity.class.getSimpleName();
 
+    public static String Name ;
     int Experience_total;
     int Experience=0;
     int Experience_level=0;
@@ -40,9 +47,12 @@ public class HomeScreen extends AppCompatActivity {
         final TextView test =findViewById(R.id.MatchmakingUpdate);
         mref = new Firebase("https://fragsout.firebaseio.com/");
 
+        checkSavedName();
+
         initLevelExperience();
         checkSavedStuff();
         FillExperienceBar(Experience);
+        CreateUserFirebase(Name);
 
         multiplayer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,25 +80,6 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-        exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                System.exit(0);
-            }
-        });
-
-        Button home=findViewById(R.id.home);
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeScreen.this,HomeScreen.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-
-        //test
         Button testmult = findViewById(R.id.mult_test);
         testmult.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +90,61 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void checkSavedName()
+    {
+        SharedPreferences prefs = this.getSharedPreferences("nameKey", Context.MODE_PRIVATE);
+        if(!prefs.contains("Name"))
+        {
+            final EditText name_ed = new EditText(this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+            );
+            name_ed.setLayoutParams(lp);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("NAME");
+            builder.setMessage("This name cannot be changed afterwards!!!")
+                    .setView(name_ed)
+                    .setCancelable(false)
+                    .setPositiveButton("Save",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(name_ed.getText().toString().equals("")) {
+                                name_ed.setHint("Write Your name dumbass");
+                                checkSavedName();
+                            }
+                            else {
+                                saveName(name_ed.getText().toString());
+                            }
+                        }
+                    });
+            AlertDialog alert=builder.create();
+            alert.show();
+        }
+        else
+        {
+            String name = prefs.getString("Name","");
+            Name=name;
+            TextView name_tv = findViewById(R.id.Name);
+            name_tv.setText(""+name);
+        }
+    }
+
+    public void saveName(String name)
+    {
+        Name=name;
+        SharedPreferences prefs = this.getSharedPreferences("nameKey", Context.MODE_PRIVATE);
+        prefs.edit().putString("Name",name).apply();
+        TextView name_tv = findViewById(R.id.Name);
+        name_tv.setText(""+name);
+    }
+
+    void CreateUserFirebase(String name)
+    {
+        mref.child("Users").child(""+name).child("Experience").setValue(""+Experience);
+        mref.child("Users").child(""+name).child("Level").setValue(""+Experience_level);
     }
 
     public void initLevelExperience()
@@ -112,7 +158,7 @@ public class HomeScreen extends AppCompatActivity {
     public int setExperience(int exp)
     {
         SharedPreferences prefs = this.getSharedPreferences("myKey", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor =prefs.edit();
+        SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("Experience",exp);
         editor.commit();
         return exp;
