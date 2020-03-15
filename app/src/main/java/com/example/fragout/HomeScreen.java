@@ -44,6 +44,7 @@ public class HomeScreen extends AppCompatActivity {
 
         Button exit = findViewById(R.id.exit);
         Button multiplayer = findViewById(R.id.multiplayer);
+        Button leaderboard = findViewById(R.id.Leaderboard);
         final TextView test =findViewById(R.id.MatchmakingUpdate);
         mref = new Firebase("https://fragsout.firebaseio.com/");
 
@@ -53,6 +54,14 @@ public class HomeScreen extends AppCompatActivity {
         checkSavedStuff();
         FillExperienceBar(Experience);
         CreateUserFirebase(Name);
+
+        leaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeScreen.this,Leaderboard.class);
+                startActivity(intent);
+            }
+        });
 
         multiplayer.setOnClickListener(new View.OnClickListener() {
             @Override
