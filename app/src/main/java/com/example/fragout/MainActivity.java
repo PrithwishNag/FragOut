@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button exit = findViewById(R.id.exit);
 
+        getName();
+
         PlayTypeDecider();
         initLevelExperience();
         checkSavedStuff();
@@ -72,6 +74,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    void getName()
+    {
+        TextView name = findViewById(R.id.Name);
+        name.setText(HomeScreen.Name);
     }
 
     public void PlayTypeDecider()

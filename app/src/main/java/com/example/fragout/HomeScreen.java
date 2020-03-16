@@ -62,7 +62,7 @@ public class HomeScreen extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkSavedName("Account Sign-In");
+                ChangeAccount();
             }
         });
 
@@ -126,34 +126,39 @@ public class HomeScreen extends AppCompatActivity {
 
     public void checkSavedName(String Hint)
     {
-        if(!isOnline())
+        final SharedPreferences prefs = this.getSharedPreferences("myKey", Context.MODE_PRIVATE);
+        if(!prefs.contains("Don't Show Again"))
         {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("WARNING OFFLINE");
-            builder.setMessage("Play offline!\nBut progress will be recorded only when you are online!")
-                    .setCancelable(false)
-                    .setPositiveButton("Continue",new DialogInterface.OnClickListener(){
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    })
-                    .setNegativeButton("Exit",new DialogInterface.OnClickListener(){
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    });
-            AlertDialog alert=builder.create();
-            alert.show();
+            if(!isOnline())
+            {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("WARNING OFFLINE");
+                builder.setMessage("Play offline!\nBut progress will be recorded only when you are online!")
+                        .setCancelable(true)
+                        .setPositiveButton("Continue",new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        })
+                        .setNegativeButton("Don't Show Again!",new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putInt("Don't Show Again",1);
+                                editor.apply();
+                            }
+                        });
+                AlertDialog alert=builder.create();
+                alert.show();
+            }
         }
-        SharedPreferences prefs = this.getSharedPreferences("nameKey", Context.MODE_PRIVATE);
         if(!prefs.contains("Name"))
         {
             if(!isOnline())
             {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("OFFLINE");
-                builder.setMessage("Unable to connect!\nPlease Check Your connection and restart the app!")
+                builder.setMessage("Unable to connect!\nPlease Check Your connection and restart the app!\n(This is needed for One-Time-Syncing)")
                         .setCancelable(false)
                         .setPositiveButton("Exit",new DialogInterface.OnClickListener(){
                             @Override
@@ -326,7 +331,7 @@ public class HomeScreen extends AppCompatActivity {
     {
         Name=name;
         Password =pass;
-        SharedPreferences prefs = this.getSharedPreferences("nameKey", Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("myKey", Context.MODE_PRIVATE);
         prefs.edit().putString("Name",name).apply();
         prefs.edit().putString("Password",pass).apply();
         TextView name_tv = findViewById(R.id.Name);
@@ -340,17 +345,33 @@ public class HomeScreen extends AppCompatActivity {
         mref.child("Users").child(""+name).child("Experience").setValue(""+Experience);
         mref.child("Users").child(""+name).child("Level").setValue(""+Experience_level);
 
-        int HighScore = getHighScore("HighScoreAdd");
-        mref.child("Users").child(""+HomeScreen.Name).child("HighScoreAdd").setValue(HighScore);
+        String HighScoreString="HighScoreAdd";
+        int HighScore = getHighScore(HighScoreString);
+        mref.child("Users").child(""+HomeScreen.Name).child(HighScoreString).setValue(HighScore);
+        if(HighScore!=0) {
+            mref.child("Leaderboard").child(""+HighScoreString).child(""+HomeScreen.Name).child("PlayerScore").setValue(HighScore);
+        }
 
-        HighScore = getHighScore("HighScoreSub");
-        mref.child("Users").child(""+HomeScreen.Name).child("HighScoreSub").setValue(HighScore);
+        HighScoreString="HighScoreSub";
+        HighScore = getHighScore(HighScoreString);
+        mref.child("Users").child(""+HomeScreen.Name).child(HighScoreString).setValue(HighScore);
+        if(HighScore!=0) {
+            mref.child("Leaderboard").child(""+HighScoreString).child(""+HomeScreen.Name).child("PlayerScore").setValue(HighScore);
+        }
 
-        HighScore = getHighScore("HighScoreMult");
-        mref.child("Users").child(""+HomeScreen.Name).child("HighScoreMult").setValue(HighScore);
+        HighScoreString="HighScoreMult";
+        HighScore = getHighScore(HighScoreString);
+        mref.child("Users").child(""+HomeScreen.Name).child(HighScoreString).setValue(HighScore);
+        if(HighScore!=0) {
+            mref.child("Leaderboard").child(""+HighScoreString).child(""+HomeScreen.Name).child("PlayerScore").setValue(HighScore);
+        }
 
-        HighScore = getHighScore("HighScoreDiv");
-        mref.child("Users").child(""+HomeScreen.Name).child("HighScoreDiv").setValue(HighScore);
+        HighScoreString="HighScoreDiv";
+        HighScore = getHighScore(HighScoreString);
+        mref.child("Users").child(""+HomeScreen.Name).child(HighScoreString).setValue(HighScore);
+        if(HighScore!=0) {
+            mref.child("Leaderboard").child(""+HighScoreString).child(""+HomeScreen.Name).child("PlayerScore").setValue(HighScore);
+        }
     }
 
     public void initLevelExperience()
@@ -368,6 +389,11 @@ public class HomeScreen extends AppCompatActivity {
         editor.putInt("Experience",exp);
         editor.commit();
         return exp;
+    }
+
+    void ChangeAccount()
+    {
+
     }
 
     public void checkSavedStuff()

@@ -2,7 +2,8 @@
 <LinearLayout android:layout_height="fill_parent"
     android:layout_width="wrap_content"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/fluorescent_green">
 
     <TextView
         android:layout_width="match_parent"
@@ -17,24 +18,27 @@
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
-        android:paddingLeft="20sp"
+        android:paddingLeft="10sp"
+        android:background="@drawable/fancy_background"
+        android:textColor="@color/white"
         android:text="Add"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
     <ListView
         android:id="@+id/listadd"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="wrap_content"></ListView>
 
     <TextView
         android:id="@+id/SubLeaderboard"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
-        android:paddingLeft="20sp"
+        android:paddingLeft="10sp"
         android:text="Subtraction"
-        android:textSize="16sp" />
+        android:background="@drawable/fancy_background"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -47,9 +51,11 @@
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
-        android:paddingLeft="20sp"
+        android:paddingLeft="10sp"
         android:text="Multiplication"
-        android:textSize="16sp" />
+        android:background="@drawable/fancy_background"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -62,9 +68,11 @@
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
-        android:paddingLeft="20sp"
+        android:paddingLeft="10sp"
         android:text="Division"
-        android:textSize="16sp" />
+        android:background="@drawable/fancy_background"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <ListView
         android:layout_width="wrap_content"

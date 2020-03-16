@@ -5,9 +5,8 @@
 
     <ImageView
         android:layout_width="82dp"
-        android:layout_height="102dp">
-
-    </ImageView>
+        android:layout_height="102dp"
+        android:id="@+id/img"/>
 
     <LinearLayout
         android:layout_width="342dp"
@@ -16,19 +15,21 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingLeft="20sp"
-            android:text="Rank 1"
-            android:textSize="22sp"></TextView>
+            android:text="Item"
+            android:textSize="22sp"/>
 
         <TextView
+            android:id="@+id/Sub_Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingLeft="20sp"
-            android:text="Rajesh : 69"
+            android:text="Sub-Item"
             android:textSize="16sp">
 
         </TextView>
