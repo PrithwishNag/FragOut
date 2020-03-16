@@ -3,21 +3,31 @@ package com.example.fragout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -26,6 +36,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final String Tag=MainActivity.class.getSimpleName();
 
     public static String Name ;
+    public static String Password ;
     int Experience_total;
     int Experience=0;
     int Experience_level=0;
@@ -42,18 +53,23 @@ public class HomeScreen extends AppCompatActivity {
         Button noOpt = findViewById(R.id.noOpt);
         Button multiOpt = findViewById(R.id.multiOpt);
 
-        Button exit = findViewById(R.id.exit);
         Button multiplayer = findViewById(R.id.multiplayer);
         Button leaderboard = findViewById(R.id.Leaderboard);
-        final TextView test =findViewById(R.id.MatchmakingUpdate);
         mref = new Firebase("https://fragsout.firebaseio.com/");
 
-        checkSavedName();
+        checkSavedName("Account Sign-In");
+        ImageButton login = findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkSavedName("Account Sign-In");
+            }
+        });
 
         initLevelExperience();
         checkSavedStuff();
+        CreateUserFirebase(Name,Password);
         FillExperienceBar(Experience);
-        CreateUserFirebase(Name);
 
         leaderboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,15 +114,58 @@ public class HomeScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
-    public void checkSavedName()
+    public void ImportantInstructions()
     {
+        initLevelExperience();
+        checkSavedStuff();
+        CreateUserFirebase(Name,Password);
+        FillExperienceBar(Experience);
+    }
+
+    public void checkSavedName(String Hint)
+    {
+        if(!isOnline())
+        {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("WARNING OFFLINE");
+            builder.setMessage("Play offline!\nBut progress will be recorded only when you are online!")
+                    .setCancelable(false)
+                    .setPositiveButton("Continue",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    })
+                    .setNegativeButton("Exit",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
+            AlertDialog alert=builder.create();
+            alert.show();
+        }
         SharedPreferences prefs = this.getSharedPreferences("nameKey", Context.MODE_PRIVATE);
         if(!prefs.contains("Name"))
         {
-            final EditText name_ed = new EditText(this);
+            if(!isOnline())
+            {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("OFFLINE");
+                builder.setMessage("Unable to connect!\nPlease Check Your connection and restart the app!")
+                        .setCancelable(false)
+                        .setPositiveButton("Exit",new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        });
+                AlertDialog alert=builder.create();
+                alert.show();
+                return;
+            }
+            /*final EditText name_ed = new EditText(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT
@@ -130,30 +189,168 @@ public class HomeScreen extends AppCompatActivity {
                         }
                     });
             AlertDialog alert=builder.create();
-            alert.show();
+            alert.show();*/
+            final Context context = this;
+
+            final Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.save_name_dialog_design);
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            final EditText name_ed = dialog.findViewById(R.id.nameInput);
+            final EditText pass_ed = dialog.findViewById(R.id.passwordInput);
+            name_ed.setHint(Hint);
+
+            dialog.setCancelable(false);
+
+            Button dialogButton = dialog.findViewById(R.id.Save);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    final String name=name_ed.getText().toString().trim();
+                    final String pass=pass_ed.getText().toString();
+                    if(name.equals("")||pass.equals("")) {
+                        checkSavedName("Enter Your Name");
+                    }
+                    else {
+                        Password = pass;
+                        mref.child("Users").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.hasChild(name) && !dataSnapshot.child(name).child("Password").getValue().equals(pass))
+                                {
+                                   checkSavedName("Username Already Exists");
+                                }
+                                else if(dataSnapshot.hasChild(name) && dataSnapshot.child(name).child("Password").getValue().equals(pass))
+                                {
+                                    switchToExistingAccount(name);
+                                }
+                                else
+                                    saveName(name,pass);
+                                mref.child("Users").removeEventListener(this);
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+                    }
+                }
+            });
+            dialog.show();
         }
         else
         {
             String name = prefs.getString("Name","");
             Name=name;
+            String pass = prefs.getString("Password","");
+            Password=pass;
             TextView name_tv = findViewById(R.id.Name);
             name_tv.setText(""+name);
+            ImportantInstructions();
         }
     }
 
-    public void saveName(String name)
-    {
-        Name=name;
-        SharedPreferences prefs = this.getSharedPreferences("nameKey", Context.MODE_PRIVATE);
-        prefs.edit().putString("Name",name).apply();
-        TextView name_tv = findViewById(R.id.Name);
-        name_tv.setText(""+name);
+    public int getHighScore(String HighScore) {
+        SharedPreferences prefs = this.getSharedPreferences("myKey", Context.MODE_PRIVATE);
+        int hs = prefs.getInt(HighScore, 0);
+        return hs;
     }
 
-    void CreateUserFirebase(String name)
+    public void setHighScore(String HighScoreString,int HighScore)
     {
+        SharedPreferences prefs = this.getSharedPreferences("myKey", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(HighScoreString,HighScore);
+        editor.commit();
+    }
+
+    public void switchToExistingAccount(final String name)
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("SWITCH ACCOUNT");
+        builder.setMessage("Do you want to switch to the existing account \""+name+"\"?!")
+                .setCancelable(false)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ExistingAccountData(name);
+                    }
+                })
+                .setNegativeButton("No",new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    checkSavedName("Username Already Exists");
+                }
+            });
+        AlertDialog alert=builder.create();
+        alert.show();
+    }
+
+    public void ExistingAccountData(final String name)
+    {
+        mref.child("Users").child(name).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                setExperience(Integer.parseInt((String)dataSnapshot.child("Experience").getValue()));
+                setExperience_level(Integer.parseInt((String)dataSnapshot.child("Level").getValue()));
+                setHighScore("HighScoreAdd",((Long) dataSnapshot.child("HighScoreAdd").getValue()).intValue());
+                setHighScore("HighScoreSub",((Long) dataSnapshot.child("HighScoreSub").getValue()).intValue());
+                setHighScore("HighScoreMult",((Long) dataSnapshot.child("HighScoreMult").getValue()).intValue());
+                setHighScore("HighScoreDiv",((Long) dataSnapshot.child("HighScoreDiv").getValue()).intValue());
+                saveName(name,(String) dataSnapshot.child("Password").getValue());
+                mref.child("USers").child(name).removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        ImportantInstructions();
+    }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void saveName(String name, String pass)
+    {
+        Name=name;
+        Password =pass;
+        SharedPreferences prefs = this.getSharedPreferences("nameKey", Context.MODE_PRIVATE);
+        prefs.edit().putString("Name",name).apply();
+        prefs.edit().putString("Password",pass).apply();
+        TextView name_tv = findViewById(R.id.Name);
+        name_tv.setText(""+name);
+        ImportantInstructions();
+    }
+
+    void CreateUserFirebase(String name, String Password)
+    {
+        mref.child("Users").child(""+name).child("Password").setValue(""+Password);
         mref.child("Users").child(""+name).child("Experience").setValue(""+Experience);
         mref.child("Users").child(""+name).child("Level").setValue(""+Experience_level);
+
+        int HighScore = getHighScore("HighScoreAdd");
+        mref.child("Users").child(""+HomeScreen.Name).child("HighScoreAdd").setValue(HighScore);
+
+        HighScore = getHighScore("HighScoreSub");
+        mref.child("Users").child(""+HomeScreen.Name).child("HighScoreSub").setValue(HighScore);
+
+        HighScore = getHighScore("HighScoreMult");
+        mref.child("Users").child(""+HomeScreen.Name).child("HighScoreMult").setValue(HighScore);
+
+        HighScore = getHighScore("HighScoreDiv");
+        mref.child("Users").child(""+HomeScreen.Name).child("HighScoreDiv").setValue(HighScore);
     }
 
     public void initLevelExperience()

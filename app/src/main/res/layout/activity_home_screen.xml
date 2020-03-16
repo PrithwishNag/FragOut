@@ -23,6 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.527"></fragment>-->
 
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="279dp"
@@ -231,6 +232,18 @@
         app:layout_constraintStart_toEndOf="@+id/noOpt"
         app:layout_constraintTop_toTopOf="@+id/noOpt"
         app:layout_constraintVertical_bias="0.299" />
+
+    <ImageButton
+        android:id="@+id/login"
+        android:layout_width="45dp"
+        android:layout_height="44dp"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/experience_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toEndOf="@+id/Name"
+        app:layout_constraintTop_toTopOf="@+id/Name"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

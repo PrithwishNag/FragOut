@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/NameLayout"
+    android:background="@drawable/my_screen_design">
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:paddingLeft="20dp"
+        android:text="Account Sign-In"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:gravity="bottom"/>
+
+    <TextView
+        android:id="@+id/Info"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:paddingLeft="20dp"
+        android:text="This name cannot be changed again!!!" />
+
+    <EditText
+        android:id="@+id/nameInput"
+        android:layout_width="233dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:hint="Name" />
+
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="233dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:hint="Password"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginEnd="20sp"
+        android:layout_marginBottom="10sp"
+        android:text="Save"
+        android:background="@drawable/button_click"
+        android:id="@+id/Save"/>
+
+</LinearLayout>

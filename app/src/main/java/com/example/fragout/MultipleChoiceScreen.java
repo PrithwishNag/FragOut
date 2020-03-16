@@ -1634,7 +1634,8 @@ public class MultipleChoiceScreen extends AppCompatActivity {
             editor.putInt(HighScoreString,HighScore);
             editor.commit();
         }
-        mref.child("Leaderboard").child(""+HighScoreString).child(""+HomeScreen.Name).child("PlayerScore").setValue(""+HighScore);
+        mref.child("Leaderboard").child(""+HighScoreString).child(""+HomeScreen.Name).child("PlayerScore").setValue(HighScore);
+        mref.child("Users").child(""+HomeScreen.Name).child(""+HighScoreString).setValue(HighScore);
     }
 
     public int getHighScore(String HighScore) {
