@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/rowlistview">
 
-    <ImageView
-        android:layout_width="82dp"
-        android:layout_height="102dp"
-        android:id="@+id/img"/>
+    <TextView
+        android:id="@+id/img"
+        android:layout_width="61dp"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:text="1"
+        android:textSize="45dp" />
 
     <LinearLayout
         android:layout_width="342dp"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
@@ -18,10 +22,11 @@
             android:id="@+id/Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:paddingLeft="20sp"
             android:text="Item"
-            android:textSize="22sp"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/Sub_Item"
@@ -30,7 +35,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="20sp"
             android:text="Sub-Item"
-            android:textSize="16sp">
+            android:textSize="14sp">
 
         </TextView>
     </LinearLayout>

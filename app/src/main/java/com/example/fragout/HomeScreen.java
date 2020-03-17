@@ -1,6 +1,7 @@
 package com.example.fragout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -58,11 +59,11 @@ public class HomeScreen extends AppCompatActivity {
         mref = new Firebase("https://fragsout.firebaseio.com/");
 
         checkSavedName("Account Sign-In");
-        ImageButton login = findViewById(R.id.login);
+        Button login = findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChangeAccount();
+                ChangeAccount("Account Sign-In");
             }
         });
 
@@ -116,11 +117,11 @@ public class HomeScreen extends AppCompatActivity {
         });
     }
 
-    public void ImportantInstructions()
+    public void ImportantInstructions(String name, String pass)
     {
         initLevelExperience();
         checkSavedStuff();
-        CreateUserFirebase(Name,Password);
+        CreateUserFirebase(name,pass);
         FillExperienceBar(Experience);
     }
 
@@ -170,31 +171,7 @@ public class HomeScreen extends AppCompatActivity {
                 alert.show();
                 return;
             }
-            /*final EditText name_ed = new EditText(this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT
-            );
-            name_ed.setLayoutParams(lp);
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("NAME");
-            builder.setMessage("This name cannot be changed afterwards!!!")
-                    .setView(name_ed)
-                    .setCancelable(false)
-                    .setPositiveButton("Save",new DialogInterface.OnClickListener(){
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if(name_ed.getText().toString().equals("")) {
-                                name_ed.setHint("Write Your name dumbass");
-                                checkSavedName();
-                            }
-                            else {
-                                saveName(name_ed.getText().toString());
-                            }
-                        }
-                    });
-            AlertDialog alert=builder.create();
-            alert.show();*/
+
             final Context context = this;
 
             final Dialog dialog = new Dialog(context);
@@ -232,7 +209,7 @@ public class HomeScreen extends AppCompatActivity {
                                     switchToExistingAccount(name);
                                 }
                                 else
-                                    saveName(name,pass);
+                                    confirmCreateAccount(name,pass);
                                 mref.child("Users").removeEventListener(this);
                             }
 
@@ -254,7 +231,7 @@ public class HomeScreen extends AppCompatActivity {
             Password=pass;
             TextView name_tv = findViewById(R.id.Name);
             name_tv.setText(""+name);
-            ImportantInstructions();
+            ImportantInstructions(Name, Password);
         }
     }
 
@@ -272,6 +249,28 @@ public class HomeScreen extends AppCompatActivity {
         editor.commit();
     }
 
+    public void confirmCreateAccount(final String name, final String pass)
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("CREATE ACCOUNT");
+        builder.setMessage("Do you want to CREATE a new account \""+name+"\"?!")
+                .setCancelable(true)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        saveName(name,pass);
+                    }
+                })
+                .setNegativeButton("No",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        checkSavedName("Enter Username");
+                    }
+                });
+        AlertDialog alert=builder.create();
+        alert.show();
+    }
+
     public void switchToExistingAccount(final String name)
     {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -287,7 +286,7 @@ public class HomeScreen extends AppCompatActivity {
                 .setNegativeButton("No",new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    checkSavedName("Username Already Exists");
+                    ChangeAccount("Username Already Exists");
                 }
             });
         AlertDialog alert=builder.create();
@@ -306,7 +305,8 @@ public class HomeScreen extends AppCompatActivity {
                 setHighScore("HighScoreMult",((Long) dataSnapshot.child("HighScoreMult").getValue()).intValue());
                 setHighScore("HighScoreDiv",((Long) dataSnapshot.child("HighScoreDiv").getValue()).intValue());
                 saveName(name,(String) dataSnapshot.child("Password").getValue());
-                mref.child("USers").child(name).removeEventListener(this);
+                ImportantInstructions(name,(String) dataSnapshot.child("Password").getValue());
+                mref.child("Users").child(name).removeEventListener(this);
             }
 
             @Override
@@ -314,7 +314,6 @@ public class HomeScreen extends AppCompatActivity {
 
             }
         });
-        ImportantInstructions();
     }
 
     protected boolean isOnline() {
@@ -336,7 +335,7 @@ public class HomeScreen extends AppCompatActivity {
         prefs.edit().putString("Password",pass).apply();
         TextView name_tv = findViewById(R.id.Name);
         name_tv.setText(""+name);
-        ImportantInstructions();
+        ImportantInstructions(name,pass);
     }
 
     void CreateUserFirebase(String name, String Password)
@@ -391,9 +390,76 @@ public class HomeScreen extends AppCompatActivity {
         return exp;
     }
 
-    void ChangeAccount()
+    void ChangeAccount(String Hint)
     {
+        if(!isOnline())
+        {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("OFFLINE");
+            builder.setMessage("Unable to connect!\nPlease Check Your connection and restart the app!\n(This is needed for One-Time-Syncing)")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+            AlertDialog alert=builder.create();
+            alert.show();
+            return;
+        }
 
+        final Context context = this;
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.save_name_dialog_design);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        final EditText name_ed = dialog.findViewById(R.id.nameInput);
+        final EditText pass_ed = dialog.findViewById(R.id.passwordInput);
+        name_ed.setHint(Hint);
+
+        dialog.setCancelable(true);
+
+        Button dialogButton = dialog.findViewById(R.id.Save);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                final String name=name_ed.getText().toString().trim();
+                final String pass=pass_ed.getText().toString();
+                if(name.equals("")||pass.equals("")) {
+                    checkSavedName("Enter Username");
+                }
+                else {
+                    Password = pass;
+                    mref.child("Users").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.hasChild(name) && !dataSnapshot.child(name).child("Password").getValue().equals(pass))
+                            {
+                                ChangeAccount("Username Already Exists");
+                            }
+                            else if(dataSnapshot.hasChild(name) && dataSnapshot.child(name).child("Password").getValue().equals(pass))
+                            {
+                                switchToExistingAccount(name);
+                            }
+                            else
+                            {
+                                ChangeAccount("You Already Have an Account! Can't Create One more");
+                            }
+                            mref.child("Users").removeEventListener(this);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                }
+            }
+        });
+        dialog.show();
     }
 
     public void checkSavedStuff()

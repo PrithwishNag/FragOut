@@ -49,17 +49,20 @@ public class Leaderboard extends AppCompatActivity {
                     list.setAdapter(adapter);
                 }
                 else {
-                    int rank = numofplayers;
+                    int r = numofplayers-1;
+                    int rank[] = new int[numofplayers];
+                    String rank1[] = new String[numofplayers];
                     String[] listarr = new String[numofplayers];
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String PlayerName = ds.getKey();
                         String PlayerScore = Long.toString((Long) ds.child("PlayerScore").getValue());
-                        listarr[i] = "Rank: " + rank + "\n" + PlayerName + " : " + PlayerScore;
+                        listarr[i] = /*"Rank: " + rank + "\n" + */PlayerName + " : " + PlayerScore;
+                        rank1[r] = "Rank: " + (r+1) + "\n";
+                        rank[r] = (r+1) ;
                         i--;
-                        rank--;
+                        r--;
                     }
-                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                            (Leaderboard.this, android.R.layout.simple_list_item_1, listarr);
+                    final Leaderboard_ListAdapter adapter = new Leaderboard_ListAdapter(Leaderboard.this, listarr,rank1,rank);
 
                     list.setAdapter(adapter);
                 }

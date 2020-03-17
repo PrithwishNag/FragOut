@@ -14,4 +14,7 @@
     <color name="fluorescent_green">#B0FFD2</color>
     <color name="light_shit_green">#A0E8D4</color>
     <color name="orange">#f36a09</color>
+    <color name="golden">#FFD700</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="bronze">#CD7F32</color>
 </resources>

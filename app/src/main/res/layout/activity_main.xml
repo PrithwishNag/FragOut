@@ -180,8 +180,8 @@
 
     <TextView
         android:id="@+id/Name"
-        android:layout_width="116dp"
-        android:layout_height="31dp"
+        android:layout_width="222dp"
+        android:layout_height="33dp"
         android:text="Prithwish"
         android:textColor="@color/black"
         android:textSize="25dp"

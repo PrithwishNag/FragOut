@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/fluorescent_green">
+    android:background="@color/white">
 
     <TextView
         android:layout_width="match_parent"
@@ -17,11 +17,11 @@
         android:id="@+id/AddLeaderboard"
         android:layout_width="match_parent"
         android:layout_height="43dp"
+        android:background="@drawable/fancy_background"
         android:gravity="center_vertical"
         android:paddingLeft="10sp"
-        android:background="@drawable/fancy_background"
-        android:textColor="@color/white"
         android:text="Add"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <ListView
@@ -33,11 +33,11 @@
         android:id="@+id/SubLeaderboard"
         android:layout_width="match_parent"
         android:layout_height="43dp"
+        android:background="@drawable/fancy_background"
         android:gravity="center_vertical"
         android:paddingLeft="10sp"
         android:text="Subtraction"
-        android:background="@drawable/fancy_background"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <ListView
@@ -50,11 +50,11 @@
         android:id="@+id/MultLeaderboard"
         android:layout_width="match_parent"
         android:layout_height="43dp"
+        android:background="@drawable/fancy_background"
         android:gravity="center_vertical"
         android:paddingLeft="10sp"
         android:text="Multiplication"
-        android:background="@drawable/fancy_background"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <ListView
@@ -67,11 +67,11 @@
         android:id="@+id/DivLeaderboard"
         android:layout_width="match_parent"
         android:layout_height="43dp"
+        android:background="@drawable/fancy_background"
         android:gravity="center_vertical"
         android:paddingLeft="10sp"
         android:text="Division"
-        android:background="@drawable/fancy_background"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <ListView
