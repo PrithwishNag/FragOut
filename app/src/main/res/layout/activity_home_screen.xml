@@ -37,7 +37,7 @@
         app:layout_constraintHorizontal_bias="0.356"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.251" />
+        app:layout_constraintVertical_bias="0.325" />
 
     <TextView
         android:id="@+id/textView"
@@ -72,8 +72,8 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="411dp"
-        android:layout_height="56dp"
+        android:layout_width="416dp"
+        android:layout_height="70dp"
         android:background="@color/transparent69"
         android:elevation="10dp"
         android:minHeight="?attr/actionBarSize"
@@ -199,7 +199,7 @@
         android:layout_width="119dp"
         android:layout_height="66dp"
         android:background="@drawable/button_design"
-        android:text="multi"
+        android:text="Ranked"
         app:layout_constraintBottom_toTopOf="@+id/divider3"
         app:layout_constraintEnd_toEndOf="@+id/noOpt"
         app:layout_constraintHorizontal_bias="0.0"
@@ -217,8 +217,8 @@
         app:layout_constraintEnd_toEndOf="@+id/noOpt"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/noOpt"
-        app:layout_constraintTop_toBottomOf="@+id/noOpt"
-        app:layout_constraintVertical_bias="0.396" />
+        app:layout_constraintTop_toBottomOf="@+id/multiOpt"
+        app:layout_constraintVertical_bias="0.116" />
 
     <Button
         android:id="@+id/mult_test"
@@ -230,8 +230,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/Leaderboard"
-        app:layout_constraintTop_toTopOf="@+id/multiOpt"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/Leaderboard"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/login"

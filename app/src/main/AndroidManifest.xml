@@ -22,28 +22,42 @@
         <activity android:name=".Leaderboard"></activity>
         <activity
             android:name=".test_multiplayer_graphics"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity" />
+
         <activity
             android:name=".MultiplayerOptionRoom"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".MultiplayerGameRoom"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity" />
+
         <activity
             android:name=".MultipleChoiceScreen"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
         <activity
             android:name=".FinalScore"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
         <activity
             android:name=".PlayScreen"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
         <activity
             android:name=".HomeScreen"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

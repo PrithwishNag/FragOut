@@ -2320,7 +2320,6 @@ public class MultiplayerGameRoom extends AppCompatActivity {
 
     public void popupExit()
     {
-        Log.d(Tag,"here");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Exit!");
         builder.setMessage("Are you sure you want to exit?\nCurrent score will not be counted!")
@@ -2356,9 +2355,9 @@ public class MultiplayerGameRoom extends AppCompatActivity {
                 Log.d(Tag,"removed");
                 String gameroomid=(String)dataSnapshot.getValue();
                 mref.child("GameRoom").child(gameroomid+"").removeValue();
+                Log.d(Tag,"removedxxxxx");
                 mref.child("Multiplayer").child(Id+"").child("GameRoomid").removeEventListener(this);
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
@@ -2370,21 +2369,14 @@ public class MultiplayerGameRoom extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
-        mref.child("Multiplayer").child(Id+"").child("GameRoomid").removeEventListener(waitingListener);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
+        //mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
         mref.child("Multiplayer").child(Id+"").child("GameRoomid").removeEventListener(waitingListener);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
+        //mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
         mref.child("Multiplayer").child(Id + "").child("GameRoomid").removeEventListener(waitingListener);
     }
 }

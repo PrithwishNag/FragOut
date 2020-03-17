@@ -34,6 +34,7 @@ public class FinalScore extends AppCompatActivity {
 
         Button home = findViewById(R.id.home);
         Button exit = findViewById(R.id.exit);
+        Button leaderboardbut = findViewById(R.id.leaderboard);
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +53,17 @@ public class FinalScore extends AppCompatActivity {
                 startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(startMain);
                 //System.exit(0);
+            }
+        });
+
+        leaderboardbut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startMain = new Intent(FinalScore.this,Leaderboard.class);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(startMain);
             }
         });
 

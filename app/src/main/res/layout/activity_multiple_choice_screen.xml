@@ -33,10 +33,23 @@
         app:layout_constraintVertical_bias="0.331"
         tools:ignore="MissingConstraints" />-->
 
+    <!--<TextView
+        android:id="@+id/b"
+        android:layout_width="84dp"
+        android:layout_height="25dp"
+        android:text="Your Ans:"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/entry2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.742" />-->
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="358dp"
-        android:layout_height="54dp"
+        android:layout_width="416dp"
+        android:layout_height="61dp"
         android:background="@color/transparent69"
         android:elevation="10dp"
         android:minHeight="?attr/actionBarSize"
@@ -44,7 +57,7 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -75,19 +88,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <!--<TextView
-        android:id="@+id/b"
-        android:layout_width="84dp"
-        android:layout_height="25dp"
-        android:text="Your Ans:"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/entry2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.742" />-->
-
     <TextView
         android:id="@+id/display"
         android:layout_width="142dp"
@@ -105,7 +105,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.943" />
+        app:layout_constraintVertical_bias="0.956" />
 
     <TextView
         android:id="@+id/display2"
@@ -121,10 +121,10 @@
         android:textSize="70dp"
         app:layout_constraintBottom_toTopOf="@+id/display3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.966"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.942" />
+        app:layout_constraintVertical_bias="0.967" />
 
     <TextView
         android:id="@+id/display3"
@@ -154,10 +154,10 @@
         android:progressDrawable="@drawable/experience_bar_design"
         app:layout_constraintBottom_toTopOf="@+id/CountDown"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.6" />
 
     <TextView
         android:id="@+id/ScoreText"
@@ -170,10 +170,10 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/display"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.763" />
+        app:layout_constraintVertical_bias="0.801" />
 
     <TextView
         android:id="@+id/score"
@@ -187,7 +187,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ScoreText"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.758" />
+        app:layout_constraintVertical_bias="0.808" />
 
     <TextView
         android:id="@+id/operator"
@@ -203,10 +203,10 @@
         android:textSize="50dp"
         app:layout_constraintBottom_toTopOf="@+id/display3"
         app:layout_constraintEnd_toStartOf="@+id/display2"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.987"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/score"
-        app:layout_constraintVertical_bias="0.906" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <View
         android:id="@+id/divider"
@@ -233,7 +233,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.908" />
+        app:layout_constraintVertical_bias="0.91" />
 
     <TextView
         android:id="@+id/textView4"
@@ -285,12 +285,12 @@
         android:text="+5"
         android:textColor="@color/colorPrimary"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/display3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.76"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.394" />
+        app:layout_constraintBottom_toBottomOf="@+id/CountDown"
+        app:layout_constraintEnd_toEndOf="@+id/score"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/CountDown"
+        app:layout_constraintTop_toTopOf="@+id/CountDown"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/instructionStart"
@@ -314,20 +314,18 @@
         android:id="@+id/exit"
         android:layout_width="78dp"
         android:layout_height="27dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="6dp"
         android:drawableRight="@drawable/ic_skip_next_black_24dp"
         android:gravity="center"
         android:pointerIcon="none"
         android:text="Give Up!"
-        app:layout_constraintBottom_toTopOf="@+id/CountDown"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_lvl"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/progress_lvl"
+        app:layout_constraintVertical_bias="0.375" />
 
     <TextView
         android:id="@+id/highscore"
@@ -342,7 +340,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ScoreText"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.405" />
 
     <TextView
         android:id="@+id/minilvl"
@@ -356,7 +354,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/progress_lvl"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.941" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/option1"
@@ -418,7 +416,6 @@
         android:id="@+id/next"
         android:layout_width="92dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="12dp"
         android:background="@drawable/button_design2"
         android:drawableRight="@drawable/ic_skip_next_black_24dp"
         android:paddingRight="10dp"
@@ -427,7 +424,6 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/entry2"
         app:layout_constraintVertical_bias="0.232" />
