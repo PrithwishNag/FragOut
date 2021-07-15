@@ -30,7 +30,8 @@ public class MultiplayerGameRoom extends AppCompatActivity {
 
     private static final String Tag = MainActivity.class.getSimpleName();
 
-    Firebase mref;
+    Firebase mref = new Firebase("https://fragsout.firebaseio.com/");
+
     String Id;
 
     public static final String priority = "Key1";
@@ -99,6 +100,8 @@ public class MultiplayerGameRoom extends AppCompatActivity {
 
 
         getID();
+
+        OpponentQuitListenner();
 
         //MakeInviCD(startcountdownvar,startcount);
 
@@ -2246,27 +2249,6 @@ public class MultiplayerGameRoom extends AppCompatActivity {
 
     void showResult(String result,String oppName,int oppscore,int myscore,int wld)
     {
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Result:");
-        builder//.setMessage(result+"\n\n"+oppName+":"+oppscore+"\n"+HomeScreen.Name+":"+myscore)
-                .setCancelable(false)
-                .setView(R.layout.custom_alert_box)
-                .setPositiveButton("EXIT",new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(MultiplayerGameRoom.this, HomeScreen.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        clearFirebaseData();
-                        startActivity(intent);
-                    }
-                });
-        AlertDialog alert=builder.create();
-        alert.show();*/
-
         final Context context = this;
 
         final Dialog dialog = new Dialog(context);
@@ -2333,7 +2315,8 @@ public class MultiplayerGameRoom extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        clearFirebaseData();
+                        closeAll();
+                        IQuit();
                         startActivity(intent);
                     }
                 }).setNegativeButton("I'll Continue", new DialogInterface.OnClickListener() {
@@ -2346,16 +2329,100 @@ public class MultiplayerGameRoom extends AppCompatActivity {
         alert.show();
     }
 
+    void IQuit()
+    {
+        mref.child("Multiplayer").child(Id+"").child("Quit").setValue(true);
+    }
+
+    ValueEventListener OppQuitListenner = null;
+    void OpponentQuitListenner()
+    {
+        mref.child("Multiplayer").child(Id+"").addValueEventListener(OppQuitListenner = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String oppid = (String)dataSnapshot.child("OpponentId").getValue();
+                mref.child("Multiplayer").child(oppid+"").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChild("Quit"))
+                        {
+                            closeAll();
+                            OppDcPopup();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    void closeAll()
+    {
+        if(cdg!=null)
+            cdg.cancel();
+        if(xcd!=null)
+            xcd.cancel();
+        if(scoreeventlistener!=null)
+            mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
+        if(waitingListener!=null)
+            mref.child("Multiplayer").child(Id + "").child("GameRoomid").removeEventListener(waitingListener);
+    }
+
+    void OppDcPopup()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("OPPS!");
+        builder.setMessage("Looks Like Your Opponent Disconnected!\n")
+                .setCancelable(false)
+                .setPositiveButton("Exit",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(MultiplayerGameRoom.this, HomeScreen.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        clearFirebaseData();
+                        /*mref.child("Multiplayer").child(Id+"").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String oppid = (String) dataSnapshot.child("OpponentId").getValue();
+                                mref.child("Multiplayer").child(oppid + "").removeValue();
+                                mref.child("Multiplayer").child(Id+"").removeEventListener(this);
+                            }
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });*/
+                        startActivity(intent);
+                    }
+                });
+        AlertDialog alert=builder.create();
+        alert.show();
+    }
+
     void clearFirebaseData()
     {
+        if(OppQuitListenner!=null)
+            mref.child("Multiplayer").child(Id+"").removeEventListener(OppQuitListenner);
         mref = new Firebase("https://fragsout.firebaseio.com/");
         mref.child("Multiplayer").child(Id+"").child("GameRoomid").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(Tag,"removed");
-                String gameroomid=(String)dataSnapshot.getValue();
+                final String gameroomid=(String)dataSnapshot.getValue();
                 mref.child("GameRoom").child(gameroomid+"").removeValue();
-                Log.d(Tag,"removedxxxxx");
+                mref.child("Multiplayer").child(Id+"").removeValue();
                 mref.child("Multiplayer").child(Id+"").child("GameRoomid").removeEventListener(this);
             }
             @Override
@@ -2363,20 +2430,27 @@ public class MultiplayerGameRoom extends AppCompatActivity {
 
             }
         });
-        mref.child("Multiplayer").child(Id+"").removeValue();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
-        mref.child("Multiplayer").child(Id+"").child("GameRoomid").removeEventListener(waitingListener);
+        if(scoreeventlistener!=null)
+            mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
+        if(waitingListener!=null)
+            mref.child("Multiplayer").child(Id + "").child("GameRoomid").removeEventListener(waitingListener);
+        /*if(OppQuitListenner!=null)
+            mref.child("Multiplayer").child(Id+"").removeEventListener(OppQuitListenner);*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
-        mref.child("Multiplayer").child(Id + "").child("GameRoomid").removeEventListener(waitingListener);
+        if(scoreeventlistener!=null)
+            mref.child("Multiplayer").child(Id+"").removeEventListener(scoreeventlistener);
+        if(waitingListener!=null)
+            mref.child("Multiplayer").child(Id + "").child("GameRoomid").removeEventListener(waitingListener);
+        if(OppQuitListenner!=null)
+            mref.child("Multiplayer").child(Id+"").removeEventListener(OppQuitListenner);
     }
 }

@@ -477,7 +477,7 @@ public class HomeScreen extends AppCompatActivity {
         SharedPreferences prefs_lvl = this.getSharedPreferences("myKey", Context.MODE_PRIVATE);
         if (prefs_lvl.contains("Level"))
         {
-            Experience_level=getExperience_level();
+            Experience_level = getExperience_level();
         }
         else
         {
