@@ -57,7 +57,6 @@
         android:id="@+id/divider3"
         android:layout_width="wrap_content"
         android:layout_height="3dp"
-        android:layout_alignTop="@+id/exit"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
